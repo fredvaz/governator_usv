@@ -5,7 +5,7 @@
   <!-- Loading file with sensor macros -->
   <xacro:include filename="$(find uuv_sensor_ros_plugins)/urdf/sensor_snippets.xacro"/>
   <!-- Loading vehicle's specific macros -->
-  <xacro:include filename="$(find governator_description)/urdf/snippets.xacro"/>
+  <xacro:include filename="$(find governatorusv_description)/urdf/snippets.xacro"/>
 
   <!-- ADDED  -->
   <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/snippets.xacro"/>
@@ -26,16 +26,16 @@
     the mesh pose will have to be corrected below in the <visual> block.
     Open the meshes for the RexROV vehicle in Blender to see an example on the mesh placement.
   -->
-  <xacro:property name="visual_mesh_file" value="file://$(find governator_description)/meshes/governator.dae"/>
+  <xacro:property name="visual_mesh_file" value="file://$(find governatorusv_description)/meshes/governatorusv.dae"/>
 
   <!-- Collision geometry mesh, usually in STL format (it is recommended to keep
   this geometry as simple as possible to improve the performance the physics engine
   regarding the computation of collision forces) -->
-  <xacro:property name="collision_mesh_file" value="file://$(find governator_description)/meshes/governator.stl"/>
+  <xacro:property name="collision_mesh_file" value="file://$(find governatorusv_description)/meshes/governatorusv.stl"/>
 
   <!-- Vehicle macro -->
-  <!-- <xacro:macro name="governator_base" params="namespace debug *gazebo"> -->
-  <xacro:macro name="governator_base" params="namespace *gazebo">
+  <!-- <xacro:macro name="governatorusv_base" params="namespace debug *gazebo"> -->
+  <xacro:macro name="governatorusv_base" params="namespace *gazebo">
 
       <!-- Rigid body description of the base link -->
       <link name="${namespace}/base_link">
@@ -82,10 +82,10 @@
     <!-- !!!!!!TO DO LATER!!!!! -->
 
     <!-- Include the thruster modules -->
-    <!-- <xacro:include filename="$(find governator_description)/urdf/thrusters.xacro"/> -->
+    <!-- <xacro:include filename="$(find governatorusv_description)/urdf/thrusters.xacro"/> -->
 
     <!-- Include the sensor modules -->
-    <!-- <xacro:include filename="$(find governator_description)/urdf/sensors.xacro"/> -->
+    <!-- <xacro:include filename="$(find governatorusv_description)/urdf/sensors.xacro"/> -->
 
   </xacro:macro>
 
