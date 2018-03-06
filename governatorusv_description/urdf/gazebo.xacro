@@ -1,67 +1,61 @@
 <?xml version="1.0"?>
+
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!--
+  Center of buoyancy according to eq. (3.1) p. 28 in Berg2012.
+  The original values, [0.0822, -0.00773, 0.3872] however, seem to
+  assume NWU (otherwise cob is below cog?).
+  -->
+  <xacro:property name="governator_cob" value="0.0 0.0 0.3"/>
+  <!-- Volume, see p.31 in Berg2012 -->
+  <xacro:property name="governator_volume" value="1.83826"/>
 
-    <!-- Center of buoyancy -->
-    <xacro:property name="governatorusv_cob" value="0 0 0"/>
+  <!-- Describing the dimensions of the vehicle's bounding box -->
+  <xacro:property name="governator_length" value="1"/>
+  <xacro:property name="governator_width"  value="1"/>
+  <xacro:property name="governator_height" value="1"/>
 
-    <!-- Vehicle's actual volume (Gazebo cannot compute the volume out of the mesh) -->
-    <xacro:property name="governatorusv_volume" value="0"/>
-
-    <!-- Describing the dimensions of the vehicle's bounding box -->
-    <xacro:property name="governatorusv_length" value="0"/>
-    <xacro:property name="governatorusv_width"  value="0"/>
-    <xacro:property name="governatorusv_height" value="0"/>
-
-    <xacro:macro name="governatorusv_hydro_model" params="namespace">
-      <!-- List of hydrodynamic models this robot's links -->
-      <link name="${namespace}/base_link">
-        <!-- This flag will make the link neutrally buoyant -->
-        <neutrally_buoyant>0</neutrally_buoyant>
-
-        <!-- Link's volume -->
-        <volume>${governatorusv_volume}</volume>
-
-        <!-- Link's bounding box, it is used to recalculate the immersed
+  <xacro:macro name="governator_hydro_model" params="namespace">
+    <!-- List of hydrodynamic models this robot's links -->
+    <link name="${namespace}/base_link">
+      <!-- This flag will make the link neutrally buoyant -->
+      <neutrally_buoyant>0</neutrally_buoyant>
+      <!-- Link's volume -->
+      <volume>${governator_volume}</volume>
+      <!-- Link's bounding box, it is used to recalculate the immersed
         volume when close to the surface.
         This is a workaround the invalid bounding box given by Gazebo-->
-        <box>
-          <width>${governatorusv_width}</width>
-          <length>${governatorusv_length}</length>
-          <height>${governatorusv_height}</height>
-        </box>
+      <box>
+        <width>${governator_width}</width>
+        <length>${governator_length}</length>
+        <height>${governator_height}</height>
+      </box>
+      <!-- Center of buoyancy -->
+      <center_of_buoyancy>${governator_cob}</center_of_buoyancy>
 
-        <!-- Center of buoyancy -->
-        <center_of_buoyancy>${governatorusv_cob}</center_of_buoyancy>
-
-        <!--
-        ----------------------------------------------------
-        ----------------------------------------------------
-        Choose one of the hydrodynamic models below, all are based on
-        Fossen's equation of motion for underwater vehicles
-
-        Reference:
-        [1] Fossen, Thor I. Handbook of marine craft hydrodynamics and motion
-            control. John Wiley & Sons, 2011.
-        ----------------------------------------------------
-        ---------------------------------------------------->
-
-        <!-- 1) Fossen's equation of motion -->
-        <hydrodynamic_model>
+      <!-- Fossen's equation of motion for underwater vehicles
+      Reference:
+          [1] Fossen, Thor I. Handbook of marine craft hydrodynamics and motion
+          control. John Wiley & Sons, 2011.
+     -->
+      <hydrodynamic_model>
           <type>fossen</type>
+          <!-- Added mass: see p.28 in Berg2012 -->
           <added_mass>
-            0 0 0 0 0 0
-            0 0 0 0 0 0
-            0 0 0 0 0 0
-            0 0 0 0 0 0
-            0 0 0 0 0 0
-            0 0 0 0 0 0
+            779.79 -6.8773 -103.32  8.5426 -165.54 -7.8033
+           -6.8773    1222   51.29  409.44 -5.8488  62.726
+           -103.32   51.29  3659.9  6.1112 -386.42  10.774
+            8.5426  409.44  6.1112   534.9 -10.027  21.019
+           -165.54 -5.8488 -386.42 -10.027  842.69 -1.1162
+           -7.8033  62.726  10.775  21.019 -1.1162  224.32
           </added_mass>
           <!--
             The linear damping coefficients can be provided as a diagonal (6 elements)
             or a full matrix (36 coefficients), like the added-mass coefficients above
+            Linear damping: see p.31 in Berg2012
           -->
           <linear_damping>
-            0 0 0 0 0 0
+            -74.82 -69.48 -728.4 -268.8 -309.77 -105
           </linear_damping>
           <!--
             The linear damping coefficients proportional to the forward speed
@@ -69,15 +63,16 @@
             like the added-mass coefficients above.
             This matrix is mostly useful for slender bodies (e.g. AUVs with torpedo shape)
           -->
-          <linear_damping_forward_speed>
+          <!-- <linear_damping_forward_speed>
             0 0 0 0 0 0
-          </linear_damping_forward_speed>
+          </linear_damping_forward_speed> -->
           <!--
             The quadratic damping coefficients can be provided as a diagonal (6 elements)
             or a full matrix (36 coefficients), like the added-mass coefficients above
+            Non-linear damping: see p.30 in Berg2012
           -->
           <quadratic_damping>
-            0 0 0 0 0 0
+            -748.22 -992.53 -1821.01 -672 -774.44 -523.27
           </quadratic_damping>
 
           <!--
@@ -94,21 +89,12 @@
               [2] Fossen, Thor I. Handbook of marine craft hydrodynamics and motion
                   control. John Wiley & Sons, 2011.
           -->
-          <!--
-          <metacentric_width>0.0</metacentric_width>
-          <metacentric_length>0.0</metacentric_length>
-          <water_level_plane_area>0.0</water_level_plane_area>
-          -->
-        </hydrodynamic_model>
 
-        <!-- 2) This computes the added-mass and damping parameters for a sphere
-        in the fluid with the given radius -->
-        <hydrodynamic_model>
-          <type>sphere</type>
-          <radius>0</radius>
-        </hydrodynamic_model>
+          <metacentric_width>0.2</metacentric_width>
+          <metacentric_length>0.2</metacentric_length>
+          <water_level_plane_area>0.04</water_level_plane_area>
 
-      </link>
-    </xacro:macro>
-
+      </hydrodynamic_model>
+    </link>
+  </xacro:macro>
 </robot>

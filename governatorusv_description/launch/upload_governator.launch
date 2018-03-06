@@ -1,31 +1,35 @@
 <launch>
   <!-- Debug flag -->
   <arg name="debug" default="0"/>
-
   <!-- Vehicle's initial pose -->
-  <arg name="x"     default="0"/>
-  <arg name="y"     default="0"/>
-  <arg name="z"     default="-20"/>
-  <arg name="roll"  default="0"/>
-  <arg name="pitch" default="0"/>
-  <arg name="yaw"   default="0"/>
-
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0"/>
+  <arg name="roll" default="0.0"/>
+  <arg name="pitch" default="0.0"/>
+  <arg name="yaw" default="0.0"/>
   <!-- Mode to open different robot configurations as set the in file
   nomenclature standard for the files in /robots
-
   /robots/<mode>.xacro
   -->
   <arg name="mode" default="default"/>
-
   <!-- Vehicle's namespace -->
-  <arg name="namespace" default="governatorusv"/>
-
+  <arg name="namespace" default="governator"/>
+  <!-- World Frame -->
   <arg name="world_frame" default="world"/>
 
+  <!-- <arg name="use_simplified_mesh" default="false"/> -->
+  <!-- <arg name="use_ned_frame" default="false"/> -->
 
   <group ns="$(arg namespace)">
+
     <param name="robot_description"
-           command="$(find xacro)/xacro.py '$(find governatorusv_description)/robots/$(arg mode).xacro' debug:=$(arg debug) namespace:=$(arg namespace)" />
+           command="$(find xacro)/xacro '$(find governator_description)/robots/governator_$(arg mode).xacro' --inorder
+                    debug:=$(arg debug)
+                    namespace:=$(arg namespace)" />
+
+                    <!-- use_simplified_mesh:=$(arg use_simplified_mesh) -->
+                    <!-- inertial_reference_frame:=world_ned -->
 
     <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"

@@ -5,13 +5,16 @@
   <!-- Loading file with sensor macros -->
   <xacro:include filename="$(find uuv_sensor_ros_plugins)/urdf/sensor_snippets.xacro"/>
   <!-- Loading vehicle's specific macros -->
-  <xacro:include filename="$(find governatorusv_description)/urdf/snippets.xacro"/>
+  <xacro:include filename="$(find governator_description)/urdf/snippets.xacro"/>
+
+  <!-- ADDED  -->
+  <xacro:include filename="$(find uuv_gazebo_ros_plugins)/urdf/snippets.xacro"/>
 
   <!--
     Vehicle's parameters (remember to enter the model parameters below)
   -->
-
-  <xacro:property name="mass" value="0"/>
+  <!-- Mass, see p.28 in Berg2012 -->
+  <xacro:property name="mass" value="1862.87"/>
   <!-- Center of gravity -->
   <xacro:property name="cog" value="0 0 0"/>
   <!-- Fluid density -->
@@ -23,15 +26,16 @@
     the mesh pose will have to be corrected below in the <visual> block.
     Open the meshes for the RexROV vehicle in Blender to see an example on the mesh placement.
   -->
-  <xacro:property name="visual_mesh_file" value="file://$(find governatorusv_description)/meshes/vehicle.dae"/>
+  <xacro:property name="visual_mesh_file" value="file://$(find governator_description)/meshes/governator.dae"/>
 
   <!-- Collision geometry mesh, usually in STL format (it is recommended to keep
   this geometry as simple as possible to improve the performance the physics engine
   regarding the computation of collision forces) -->
-  <xacro:property name="collision_mesh_file" value="file://$(find governatorusv_description)/meshes/vehicle.stl"/>
+  <xacro:property name="collision_mesh_file" value="file://$(find governator_description)/meshes/governator.stl"/>
 
   <!-- Vehicle macro -->
-  <xacro:macro name="governatorusv_base" params="namespace debug *gazebo">
+  <!-- <xacro:macro name="governator_base" params="namespace debug *gazebo"> -->
+  <xacro:macro name="governator_base" params="namespace *gazebo">
 
       <!-- Rigid body description of the base link -->
       <link name="${namespace}/base_link">
@@ -42,10 +46,14 @@
         <inertial>
           <mass value="${mass}" />
           <origin xyz="${cog}" rpy="0 0 0"/>
-          <inertia ixx="0" ixy="0" ixz="0"
-                   iyy="0" iyz="0"
-                   izz="0" />
+          <inertia ixx="525.39" ixy="1.44" ixz="33.41" iyy="794.20" iyz="2.6" izz="691.23"/>
         </inertial>
+
+        <!-- This visual geometry representation can be used when running
+             tasks in which you need Gazebo to start quickly
+        -->
+        <!-- <xacro:if value="${use_simplified_mesh}"> -->
+        <!-- Code in rexrov2_base.xacro if use the flag use_simplified_mesh -->
 
         <visual>
           <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -54,26 +62,30 @@
           </geometry>
         </visual>
 
+        <!-- In rexrov2_base they made collision planes -->
         <collision>
           <origin xyz="0 0 0" rpy="0 0 0"/>
           <geometry>
             <mesh filename="${collision_mesh_file}" scale="1 1 1" />
           </geometry>
         </collision>
+
       </link>
 
-    <gazebo reference="${namespace}/base_link">
+    <!-- <gazebo reference="${namespace}/base_link">
       <selfCollide>false</selfCollide>
-    </gazebo>
+    </gazebo> -->
 
     <!-- Set up hydrodynamic plugin given as input parameter -->
     <xacro:insert_block name="gazebo"/>
 
+    <!-- !!!!!!TO DO LATER!!!!! -->
+
     <!-- Include the thruster modules -->
-    <xacro:include filename="$(find governatorusv_description)/urdf/thrusters.xacro"/>
+    <!-- <xacro:include filename="$(find governator_description)/urdf/thrusters.xacro"/> -->
 
     <!-- Include the sensor modules -->
-    <xacro:include filename="$(find governatorusv_description)/urdf/sensors.xacro"/>
+    <!-- <xacro:include filename="$(find governator_description)/urdf/sensors.xacro"/> -->
 
   </xacro:macro>
 
