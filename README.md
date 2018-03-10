@@ -1,13 +1,13 @@
-# GovernatorUSV
+# Governator USV
 
 This repository contains the robot description and necessary launch files to
-simulate the GovernatorUSV unmanned surface vehicle. This repository is complementary
+simulate the Governator USV unmanned surface vehicle. This repository is complementary
 to the [Unmanned Underwater Vehicle Simulator (UUV Simulator)](https://github.com/uuvsimulator/uuv_simulator),
 an open-source project extending the simulation capabilities of the robotics
 simulator Gazebo to underwater vehicles and environments. For installation and
 usage instructions, please refer to the [documentation pages](https://uuvsimulator.github.io/).
 
-The dimensions and parameters for the GovernatorUSV are derived from...
+The dimensions and parameters for the Governator USV are derived from...
 
 
 ## Requirements
@@ -18,7 +18,7 @@ this package in the `src` folder of you catkin workspace
 
 ```
 cd ~/catkin_ws/src
-git clone https://github.com/fredvaz/governator.git
+git clone https://github.com/fredvaz/governator_usv.git
 ```
 
 and then build your catkin workspace
@@ -40,7 +40,7 @@ roslaunch uuv_descriptions ocean_waves.launch
 and then
 
 ```bash
-roslaunch bluerov2_gazebo upload_governator.launch 
+roslaunch bluerov2_gazebo upload_governator_usv.launch 
 ```
 
 ## License
