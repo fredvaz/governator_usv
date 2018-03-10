@@ -6,32 +6,32 @@
   The original values, [0.0822, -0.00773, 0.3872] however, seem to
   assume NWU (otherwise cob is below cog?).
   -->
-  <xacro:property name="governatorusv_cob" value="0.0 0.0 0.3"/>
+  <xacro:property name="governator_usv_cob" value="0.0 0.0 0.3"/>
   <!-- Volume, see p.31 in Berg2012 -->
-  <xacro:property name="governatorusv_volume" value="1.83826"/>
+  <xacro:property name="governator_usv_volume" value="1.83826"/>
 
   <!-- Describing the dimensions of the vehicle's bounding box -->
-  <xacro:property name="governatorusv_length" value="1"/>
-  <xacro:property name="governatorusv_width"  value="1"/>
-  <xacro:property name="governatorusv_height" value="1"/>
+  <xacro:property name="governator_usv_length" value="1"/>
+  <xacro:property name="governator_usv_width"  value="1"/>
+  <xacro:property name="governator_usv_height" value="1"/>
 
-  <xacro:macro name="governatorusv_hydro_model" params="namespace">
+  <xacro:macro name="governator_usv_hydro_model" params="namespace">
     <!-- List of hydrodynamic models this robot's links -->
     <link name="${namespace}/base_link">
       <!-- This flag will make the link neutrally buoyant -->
       <neutrally_buoyant>0</neutrally_buoyant>
       <!-- Link's volume -->
-      <volume>${governatorusv_volume}</volume>
+      <volume>${governator_usv_volume}</volume>
       <!-- Link's bounding box, it is used to recalculate the immersed
         volume when close to the surface.
         This is a workaround the invalid bounding box given by Gazebo-->
       <box>
-        <width>${governatorusv_width}</width>
-        <length>${governatorusv_length}</length>
-        <height>${governatorusv_height}</height>
+        <width>${governator_usv_width}</width>
+        <length>${governator_usv_length}</length>
+        <height>${governator_usv_height}</height>
       </box>
       <!-- Center of buoyancy -->
-      <center_of_buoyancy>${governatorusv_cob}</center_of_buoyancy>
+      <center_of_buoyancy>${governator_usv_cob}</center_of_buoyancy>
 
       <!-- Fossen's equation of motion for underwater vehicles
       Reference:

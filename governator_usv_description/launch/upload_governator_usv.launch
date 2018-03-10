@@ -14,7 +14,7 @@
   -->
   <arg name="mode" default="default"/>
   <!-- Vehicle's namespace -->
-  <arg name="namespace" default="governatorusv"/>
+  <arg name="namespace" default="governator_usv"/>
   <!-- World Frame -->
   <arg name="world_frame" default="world"/>
 
@@ -24,7 +24,7 @@
   <group ns="$(arg namespace)">
 
     <param name="robot_description"
-           command="$(find xacro)/xacro '$(find governatorusv_description)/robots/governatorusv_$(arg mode).xacro' --inorder
+           command="$(find xacro)/xacro '$(find governator_usv_description)/robots/governator_usv_$(arg mode).xacro' --inorder
                     debug:=$(arg debug)
                     namespace:=$(arg namespace)" />
 
