@@ -1,7 +1,7 @@
 # Governator USV
 
 This repository contains the robot description and necessary launch files to
-simulate the Governator USV unmanned surface vehicle. This repository is complementary
+simulate the Governator USV (unmanned surface vehicle). This repository is complementary
 to the [Unmanned Underwater Vehicle Simulator (UUV Simulator)](https://github.com/uuvsimulator/uuv_simulator),
 an open-source project extending the simulation capabilities of the robotics
 simulator Gazebo to underwater vehicles and environments. For installation and
@@ -45,5 +45,5 @@ roslaunch bluerov2_gazebo upload_governator_usv.launch
 
 ## License
 
-RexROV 2 package is open-sourced under the Apache-2.0 license. See the
+Governator USV package is open-sourced under the Apache-2.0 license. See the
 [LICENSE](LICENSE) file for details.
